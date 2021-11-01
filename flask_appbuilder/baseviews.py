@@ -325,11 +325,18 @@ class BaseView(object):
         """
         index_url = self.appbuilder.get_url_for_index
         page_history = Stack(session.get("page_history", []))
+        log.info(f"index_url: {index_url}")
+        log.info(f"page_history: {page_history}")
 
         if page_history.pop() is None:
+            log.info("page history is None")
             return index_url
+
+        log.info(f"page_history after pop: {page_history}")
         session["page_history"] = page_history.to_json()
         url = page_history.pop() or index_url
+        log.info(f"page_history after second pop: {page_history}")
+        log.info(f"URL: {url}")
         return url
 
     @classmethod
